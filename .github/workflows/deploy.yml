@@ -23,10 +23,8 @@ jobs:
       - name: Deploy via SSH
         run: |
           ssh ${{ secrets.USERNAME }}@${{ secrets.SERVER_IP }} << 'EOF'
-            docker stop transaction-api || true
-            docker rm transaction-api || true
             cd /root/transactions_api/
+            docker compose down transaction-api || true
             git pull origin main
-            docker build -t transaction-api .
-            docker run -d --name transaction-api -p 3000:3000 transaction-api
+            docker compose up -d --build
           EOF
