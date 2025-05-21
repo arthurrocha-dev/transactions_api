@@ -10,6 +10,7 @@ import { StatisticsController } from './infra/http/controllers/statistics.contro
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { HealthController } from './infra/http/controllers/healthcheck.controller';
+import { PinoLogger } from './services/pino-logger.service';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { HealthController } from './infra/http/controllers/healthcheck.controlle
     DeleteAllTransactionsUseCase,
     GetAllTransactionsUseCase,
     GetStatisticsUseCase,
+    PinoLogger,
     {
       provide: TransactionsRepository,
       useClass: InMemoryTransactionsRepository,
