@@ -1,4 +1,4 @@
-# Documentação da Resolução do Desafio Técnico - Desenvolvedor Pleno NestJS
+# Transactions API - Release 1.0.0
 
 ## 1. Visão Geral
 
@@ -8,7 +8,75 @@ A solução foi construída visando clareza, escalabilidade e qualidade do códi
 
 ---
 
-## 2. Estrutura do Projeto e Clean Architecture
+## 2. Instalação
+
+### Pré-requisitos
+
+- [Node.js](https://nodejs.org/) (versão 18 ou superior recomendada)
+- [Yarn](https://yarnpkg.com/)
+- [Docker](https://www.docker.com/) (para rodar com container)
+- [Docker Compose](https://docs.docker.com/compose/) (opcional, para facilitar execução com múltiplos containers)
+
+### Passos para rodar localmente
+
+#### 1. Clone o repositório:
+
+```bash
+   git https://github.com/arthurrocha-dev/transactions_api.git
+   cd transactions_api
+```
+
+#### 2. Instalação de dependências:
+
+Configure as variáveis de ambiente
+
+#### 3. Configure as variáveis de ambiente:
+
+Copie o arquivo .env.example e cole na raiz do projeto renomendo-o para .env, ajustando os dados das variâveis para o ambiente local.
+
+```bash
+  cp .env.example .env
+```
+
+#### 4. A API estará disponível em:
+
+`http://localhost:3000`
+
+ou e alguma outra porta que tenha sido configurada no .env
+
+---
+
+### Rodando pelo Docker
+
+#### 1. Iniciar container docker:
+
+Dentro da raiz do projeto execute o seguinte comando no terminal
+
+```bash
+  docker compose up -d
+```
+
+ou
+
+```bash
+  docker-compose up -d
+```
+
+#### 2. A API estará disponível em:
+
+`http://localhost:3000`
+
+ou e alguma outra porta que tenha sido configurada no .env
+
+## 3. Documentação (Swagger)
+
+Apos a inicialização do projeto, a documentação pode ser acessada em:
+
+(http://localhost:3000/docs)
+
+---
+
+## 4. Estrutura do Projeto e Clean Architecture
 
 O projeto está dividido nas seguintes camadas:
 
@@ -22,7 +90,7 @@ Essa separação garante fácil manutenção, testabilidade e flexibilidade para
 
 ---
 
-## 3. Principais Tecnologias e Ferramentas
+## 5. Principais Tecnologias e Ferramentas
 
 - **NestJS:** Framework principal para construção da API, permitindo injeção de dependência e modularidade.
 - **TypeScript:** Para tipagem estática e segurança no código.
@@ -35,7 +103,7 @@ Essa separação garante fácil manutenção, testabilidade e flexibilidade para
 
 ---
 
-## 4. Lógica do Rate Limiting
+## 6. Lógica do Rate Limiting
 
 - Usamos `ThrottlerModule` configurado globalmente com limite de 5 requisições por 60 segundos.
 - O `ThrottlerGuard` é aplicado globalmente via `APP_GUARD`, garantindo que todas rotas respeitem o limite.
@@ -44,7 +112,7 @@ Essa separação garante fácil manutenção, testabilidade e flexibilidade para
 
 ---
 
-## 5. Tratamento de Dados e Validação
+## 7. Tratamento de Dados e Validação
 
 - Validação rigorosa via `class-validator` nos DTOs para garantir:
   - `amount` deve ser número positivo ou zero.
@@ -55,7 +123,7 @@ Essa separação garante fácil manutenção, testabilidade e flexibilidade para
 
 ---
 
-## 6. Armazenamento em Memória
+## 8. Armazenamento em Memória
 
 - As transações são armazenadas em um repositório em memória (`InMemoryTransactionsRepository`).
 - As operações de adicionar, listar e apagar são sincronizadas para evitar problemas de concorrência.
@@ -63,13 +131,13 @@ Essa separação garante fácil manutenção, testabilidade e flexibilidade para
 
 ---
 
-## 7. Testes Automatizados
+## 9. Testes Automatizados
 
 - Cobertura abrangente com testes unitários para Use Cases.
 
 ---
 
-## 8. Segurança
+## 10. Segurança
 
 - Além do rate limiting, o uso do Helmet configura cabeçalhos HTTP para prevenir ataques comuns (XSS, CSRF, etc).
 - CORS habilitado para permitir requisições seguras controladas.
@@ -77,7 +145,7 @@ Essa separação garante fácil manutenção, testabilidade e flexibilidade para
 
 ---
 
-## 9. Logs Estruturados
+## 11. Logs Estruturados
 
 - Logs configurados com Pino para facilitar análise e monitoramento.
 - Todos os logs seguem formato JSON estruturado.
@@ -85,14 +153,14 @@ Essa separação garante fácil manutenção, testabilidade e flexibilidade para
 
 ---
 
-## 10. Containerização
+## 12. Containerização
 
 - Dockerfile otimizado para build leve e rápido.
 - docker-compose.yml para execução simples em ambiente local ou CI/CD.
 
 ---
 
-## 11. Endpoints Principais
+## 13. Endpoints Principais
 
 | Método | Endpoint        | Descrição                            |
 | ------ | --------------- | ------------------------------------ |
@@ -104,7 +172,7 @@ Essa separação garante fácil manutenção, testabilidade e flexibilidade para
 
 ---
 
-## 12. Conclusão
+## 14. Conclusão
 
 Esta solução prioriza clareza, modularidade, segurança e qualidade do código.  
 Foi implementada para atender rigorosamente os requisitos do desafio, utilizando padrões modernos e boas práticas.
@@ -113,4 +181,9 @@ Foi implementada para atender rigorosamente os requisitos do desafio, utilizando
 
 ## Autor
 
-[Atrhur Rocha](https://github.com/arthurrocha-dev)
+**Arthur Rocha**
+
+- [E-mail](mailto:contato.arthurrochadev@gmail.com)
+- [Portfólio](https://arthurrocha.dev)
+- [GitHub](https://github.com/arthurrocha-dev)
+- [LinkedIn](https://www.linkedin.com/in/arthurrocha-dev)
