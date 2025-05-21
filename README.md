@@ -1,5 +1,29 @@
 # Transactions API - Release 1.0.0
 
+## Sumário
+
+- [1. Visão Geral](#1-visão-geral)
+- [2. Instalação](#2-instalação)
+  - [Pré-requisitos](#pré-requisitos)
+  - [Passos para rodar localmente](#passos-para-rodar-localmente)
+  - [Rodando pelo Docker](#rodando-pelo-docker)
+- [3. Documentação (Swagger)](#3-documentação-swagger)
+- [4. Estrutura do Projeto e Clean Architecture](#4-estrutura-do-projeto-e-clean-architecture)
+- [5. Principais Tecnologias e Ferramentas](#5-principais-tecnologias-e-ferramentas)
+- [6. Lógica do Rate Limiting](#6-lógica-do-rate-limiting)
+- [7. Tratamento de Dados e Validação](#7-tratamento-de-dados-e-validação)
+- [8. Armazenamento em Memória](#8-armazenamento-em-memória)
+- [9. Testes Automatizados](#9-testes-automatizados)
+- [10. Segurança](#10-segurança)
+- [11. Logs Estruturados](#11-logs-estruturados)
+- [12. Containerização](#12-containerização)
+- [13. Healthcheck e Monitoramento da Aplicação](#13-healthcheck-e-monitoramento-da-aplicação)
+- [14. Endpoints Principais](#14-endpoints-principais)
+- [15. Integração Contínua (CI)](#15-integração-contínua-ci)
+- [16. Deploy Contínuo (CD)](#16-deploy-contínuo-cd)
+- [17. Conclusão](#17-conclusão)
+- [Autor](#autor)
+
 ## 1. Visão Geral
 
 Este projeto implementa uma API RESTful em NestJS que recebe transações, armazena em memória e fornece estatísticas das transações dos últimos 60 segundos, conforme o desafio técnico proposto.
@@ -206,7 +230,39 @@ A pipeline está definido em:
 
 ---
 
-## 16. Conclusão
+## 16. Deploy Contínuo (CD)
+
+Este projeto conta com deploy contínuo automatizado (CD) usando GitHub Actions e Docker em um servidor remoto provisionado na DigitalOcean.
+
+A cada push na branch main, o GitHub Actions executa automaticamente o seguinte processo de deploy:
+
+1. Build da imagem Docker da aplicação.
+2. Conexão via SSH com o servidor da DigitalOcean usando uma chave privada segura (SSH_PRIVATE_KEY).
+3. Parada do container antigo (caso exista).
+4. Atualização da aplicação.
+5. Execução do container com as novas atulizações
+6. Aplicação imediatamente disponível via DNS configurado.
+
+### Secrets usados no GitHub Actions
+
+| Nome do Secret    | Descrição                                   |
+| ----------------- | ------------------------------------------- |
+| `SSH_PRIVATE_KEY` | Chave privada SSH usada para conexão remota |
+| `USERNAME`        | Usuário de acesso SSH (ex: `root`)          |
+| `SERVER_IP`       | IP público do servidor na DigitalOcean      |
+
+O arquivo que define o pipeline de CD está localizado em:
+`.github/workflows/deploy.yml`
+
+### Acesso via domínio personalizado
+
+A aplicação encontra-se disponível no link a baixo.
+
+https://transaction-api.arthurrocha.dev/docs
+
+---
+
+## 17. Conclusão
 
 Esta solução prioriza clareza, modularidade, segurança e qualidade do código.  
 Foi implementada para atender rigorosamente os requisitos do desafio, utilizando padrões modernos e boas práticas.
