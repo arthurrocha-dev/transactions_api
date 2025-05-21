@@ -9,9 +9,16 @@ export class GetStatisticsUseCase {
     const now = Date.now();
     const past60s = now - 60000;
 
-    const validTransactions = this.repository
-      .getAll()
-      .filter((tx) => tx.timestamp.getTime() >= past60s);
+    const transactions = this.repository.getAll();
+
+    transactions.forEach((t) => console.log(t.timestamp.getTime()));
+
+    const validTransactions = transactions.filter((tx) => {
+      const txTime = new Date(tx.timestamp).getTime();
+      return txTime >= past60s;
+    });
+
+    console.log(validTransactions);
 
     const count = validTransactions.length;
 

@@ -10,11 +10,10 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { CreateTransactionDto } from '../dtos/create-transaction.dto';
-import { CreateTransactionUseCase } from 'src/core/use-cases/transaction/create-transaction.usecase';
+import { CreateTransactionUseCase } from '../../../core/use-cases/transaction/create-transaction.usecase';
 import { ApiTags } from '@nestjs/swagger';
-import { DeleteAllTransactionsUseCase } from 'src/core/use-cases/transaction/delete-all-transactions.usecase';
-import { GetAllTransactionsUseCase } from 'src/core/use-cases/transaction/get-all-transactions.usecase';
-import { GetStatisticsUseCase } from 'src/core/use-cases/statistics/get-statistics.usecase';
+import { DeleteAllTransactionsUseCase } from '../../../core/use-cases/transaction/delete-all-transactions.usecase';
+import { GetAllTransactionsUseCase } from '../../../core/use-cases/transaction/get-all-transactions.usecase';
 import { Throttle } from '@nestjs/throttler';
 
 @ApiTags('Transactions')
@@ -24,7 +23,6 @@ export class TransactionsController {
     private readonly createTransactionUseCase: CreateTransactionUseCase,
     private readonly deleteAllTransactionsUseCase: DeleteAllTransactionsUseCase,
     private readonly getAllTransactionsUseCase: GetAllTransactionsUseCase,
-    private readonly getStatisticsUseCase: GetStatisticsUseCase,
   ) {}
 
   @Get()

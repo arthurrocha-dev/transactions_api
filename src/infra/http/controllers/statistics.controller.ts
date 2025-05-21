@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { GetStatisticsUseCase } from 'src/core/use-cases/statistics/get-statistics.usecase';
+import { GetStatisticsUseCase } from '../../../core/use-cases/statistics/get-statistics.usecase';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 
