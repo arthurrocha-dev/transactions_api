@@ -160,7 +160,21 @@ Essa separação garante fácil manutenção, testabilidade e flexibilidade para
 
 ---
 
-## 13. Endpoints Principais
+## 13. Healthcheck e Monitoramento da Aplicação
+
+#### Endpoint `/health`
+
+- Endpoint simples que retorna HTTP 200 e um JSON com { status: 'ok', timestamp: '...' } quando a aplicação está saudável.
+- Pode ser estendido para verificar dependências críticas (ex: banco de dados, caches).
+- O NestJS inclui log de cada requisição a /health, facilitando auditoria e monitoramento.
+
+#### O que acontece em caso de falha?
+
+- Se o endpoint /health não responder ou retornar erro (código HTTP diferente de 2xx), o Docker marca o container como unhealthy.
+- Após o número de tentativas configuradas (retries), o container é considerado indisponível.
+- Para recuperação automática, foi configurado uma política de reinício do Docker Compose
+
+## 14. Endpoints Principais
 
 | Método | Endpoint        | Descrição                            |
 | ------ | --------------- | ------------------------------------ |
@@ -172,7 +186,7 @@ Essa separação garante fácil manutenção, testabilidade e flexibilidade para
 
 ---
 
-## 14. Conclusão
+## 15. Conclusão
 
 Esta solução prioriza clareza, modularidade, segurança e qualidade do código.  
 Foi implementada para atender rigorosamente os requisitos do desafio, utilizando padrões modernos e boas práticas.
