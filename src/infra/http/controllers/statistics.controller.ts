@@ -8,7 +8,7 @@ import { Throttle } from '@nestjs/throttler';
 export class StatisticsController {
   constructor(private readonly getStatisticsUseCase: GetStatisticsUseCase) {}
 
-  @Throttle({ default: { limit: 5, ttl: 30 } })
+  @Throttle({ default: { limit: 1, ttl: 60000 } })
   @Get()
   @ApiOperation({ summary: 'Retorna estatísticas das últimas 60s' })
   @ApiResponse({

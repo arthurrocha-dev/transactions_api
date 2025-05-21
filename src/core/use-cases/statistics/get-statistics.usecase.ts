@@ -18,8 +18,6 @@ export class GetStatisticsUseCase {
       return txTime >= past60s;
     });
 
-    console.log(validTransactions);
-
     const count = validTransactions.length;
 
     if (count === 0) {

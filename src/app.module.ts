@@ -13,14 +13,13 @@ import { HealthController } from './infra/http/controllers/healthcheck.controlle
 
 @Module({
   imports: [
-    ThrottlerModule.forRoot({
-      throttlers: [
-        {
-          ttl: 60,
-          limit: 5,
-        },
-      ],
-    }),
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000,
+        limit: 10,
+        blockDuration: 60000,
+      },
+    ]),
   ],
   controllers: [HealthController, TransactionsController, StatisticsController],
   providers: [

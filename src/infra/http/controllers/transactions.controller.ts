@@ -25,12 +25,13 @@ export class TransactionsController {
     private readonly getAllTransactionsUseCase: GetAllTransactionsUseCase,
   ) {}
 
+  @Throttle({ default: { limit: 10, ttl: 60000 } })
   @Get()
-  @Throttle({ default: { limit: 1, ttl: 30 } })
   getAll() {
     return this.getAllTransactionsUseCase.execute();
   }
 
+  @Throttle({ default: { limit: 10, ttl: 60000 } })
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @UsePipes(new ValidationPipe({ whitelist: true }))
@@ -46,6 +47,7 @@ export class TransactionsController {
     };
   }
 
+  @Throttle({ default: { limit: 1, ttl: 60000 } })
   @Delete()
   @HttpCode(HttpStatus.OK)
   deleteAll() {
