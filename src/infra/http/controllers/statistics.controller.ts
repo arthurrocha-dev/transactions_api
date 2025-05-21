@@ -2,11 +2,15 @@ import { Controller, Get } from '@nestjs/common';
 import { GetStatisticsUseCase } from '../../../core/use-cases/statistics/get-statistics.usecase';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
+import { PinoLogger } from 'src/services/pino-logger.service';
 
 @ApiTags('Statistics')
 @Controller('statistics')
 export class StatisticsController {
-  constructor(private readonly getStatisticsUseCase: GetStatisticsUseCase) {}
+  constructor(
+    private readonly getStatisticsUseCase: GetStatisticsUseCase,
+    private readonly logger: PinoLogger,
+  ) {}
 
   @Throttle({ default: { limit: 1, ttl: 60000 } })
   @Get()
@@ -24,6 +28,19 @@ export class StatisticsController {
     },
   })
   getStatistics() {
-    return this.getStatisticsUseCase.execute();
+    this.logger.log('Requisição para obter estatísticas iniciada');
+
+    try {
+      const stats = this.getStatisticsUseCase.execute();
+      this.logger.log(`Estatísticas calculadas: ${JSON.stringify(stats)}`);
+      return stats;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        this.logger.error('Erro ao obter estatísticas', error.stack);
+      } else {
+        this.logger.error('Erro ao obter estatísticas', String(error));
+      }
+      throw error;
+    }
   }
 }
