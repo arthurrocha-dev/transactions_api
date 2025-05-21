@@ -186,7 +186,27 @@ Essa separação garante fácil manutenção, testabilidade e flexibilidade para
 
 ---
 
-## 15. Conclusão
+## 15. Integração Contínua (CI)
+
+Este projeto conta com integração contínua automatizada usando GitHub Actions, garantindo qualidade e consistência a cada alteração enviada para o repositório.
+
+#### Pipeline CI
+
+A cada push ou pull request nas branches main, master ou develop, a seguinte pipeline é executada:
+
+1. Checkout do código
+2. Instalação de dependências com Yarn
+3. Execução dos testes automatizados com Jest
+4. Build da aplicação (compilação TypeScript)
+
+#### Arquivo de configuração
+
+A pipeline está definido em:
+`.github/workflows/ci.yml`
+
+---
+
+## 16. Conclusão
 
 Esta solução prioriza clareza, modularidade, segurança e qualidade do código.  
 Foi implementada para atender rigorosamente os requisitos do desafio, utilizando padrões modernos e boas práticas.
