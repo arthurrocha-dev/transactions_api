@@ -5,10 +5,13 @@ WORKDIR /app
 
 RUN apk add --no-cache curl
 
+RUN npm install -g @nestjs/cli
+
 COPY package*.json ./
-RUN yarn install
 
 COPY . .
+
+RUN yarn install
 
 RUN yarn build
 
