@@ -15,6 +15,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { DeleteAllTransactionsUseCase } from 'src/core/use-cases/transaction/delete-all-transactions.usecase';
 import { GetAllTransactionsUseCase } from 'src/core/use-cases/transaction/get-all-transactions.usecase';
 import { GetStatisticsUseCase } from 'src/core/use-cases/statistics/get-statistics.usecase';
+import { Throttle } from '@nestjs/throttler';
 
 @ApiTags('Transactions')
 @Controller('transactions')
@@ -27,6 +28,7 @@ export class TransactionsController {
   ) {}
 
   @Get()
+  @Throttle({ default: { limit: 1, ttl: 30 } })
   getAll() {
     return this.getAllTransactionsUseCase.execute();
   }

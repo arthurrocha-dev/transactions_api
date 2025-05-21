@@ -1,98 +1,116 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Documentação da Resolução do Desafio Técnico - Desenvolvedor Pleno NestJS
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## 1. Visão Geral
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Este projeto implementa uma API RESTful em NestJS que recebe transações, armazena em memória e fornece estatísticas das transações dos últimos 60 segundos, conforme o desafio técnico proposto.
 
-## Description
+A solução foi construída visando clareza, escalabilidade e qualidade do código, seguindo os princípios da Clean Architecture e boas práticas de desenvolvimento backend.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+---
 
-## Project setup
+## 2. Estrutura do Projeto e Clean Architecture
 
-```bash
-$ yarn install
-```
+O projeto está dividido nas seguintes camadas:
 
-## Compile and run the project
+- **Controllers:** Lidam com requisições HTTP e enviam respostas. Exemplo: `TransactionsController` e `StatisticsController`.
+- **Use Cases:** Contêm a lógica de negócio pura, independente de frameworks ou tecnologias. Exemplo: `CreateTransactionUseCase`, `GetStatisticsUseCase`.
+- **Entities:** Definições dos modelos de domínio, representando as transações.
+- **Repositories:** Interfaces e implementações que abstraem o armazenamento em memória (`InMemoryTransactionsRepository`).
+- **Interfaces/DTOs:** Objetos para validação e definição clara dos contratos de dados (por exemplo, DTOs para criação de transação).
 
-```bash
-# development
-$ yarn run start
+Essa separação garante fácil manutenção, testabilidade e flexibilidade para futuras alterações (ex: trocar armazenamento por banco real).
 
-# watch mode
-$ yarn run start:dev
+---
 
-# production mode
-$ yarn run start:prod
-```
+## 3. Principais Tecnologias e Ferramentas
 
-## Run tests
+- **NestJS:** Framework principal para construção da API, permitindo injeção de dependência e modularidade.
+- **TypeScript:** Para tipagem estática e segurança no código.
+- **Pino:** Logs estruturados e performáticos, configurados para exibição colorida no console.
+- **Helmet:** Middleware para melhorar segurança HTTP.
+- **Rate Limiting:** Implementado com `@nestjs/throttler` para evitar abuso da API.
+- **Jest:** Para testes unitários e de integração, garantindo qualidade e robustez.
+- **Swagger:** Documentação interativa da API acessível via `/docs`.
+- **Docker:** Para containerização e facilidade de deploy.
 
-```bash
-# unit tests
-$ yarn run test
+---
 
-# e2e tests
-$ yarn run test:e2e
+## 4. Lógica do Rate Limiting
 
-# test coverage
-$ yarn run test:cov
-```
+- Usamos `ThrottlerModule` configurado globalmente com limite de 5 requisições por 60 segundos.
+- O `ThrottlerGuard` é aplicado globalmente via `APP_GUARD`, garantindo que todas rotas respeitem o limite.
+- Em endpoints críticos, o decorator `@Throttle()` permite configuração específica se necessário.
+- Isso protege a API contra requisições excessivas, garantindo estabilidade.
 
-## Deployment
+---
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## 5. Tratamento de Dados e Validação
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+- Validação rigorosa via `class-validator` nos DTOs para garantir:
+  - `amount` deve ser número positivo ou zero.
+  - `timestamp` deve estar no passado ou presente, nunca futuro.
+- Respostas HTTP apropriadas para erros:
+  - `400 Bad Request` para JSON inválido.
+  - `422 Unprocessable Entity` para dados que violam regras de negócio.
 
-```bash
-$ yarn install -g @nestjs/mau
-$ mau deploy
-```
+---
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## 6. Armazenamento em Memória
 
-## Resources
+- As transações são armazenadas em um repositório em memória (`InMemoryTransactionsRepository`).
+- As operações de adicionar, listar e apagar são sincronizadas para evitar problemas de concorrência.
+- As estatísticas são calculadas filtrando apenas transações dos últimos 60 segundos, garantindo dados atualizados.
 
-Check out a few resources that may come in handy when working with NestJS:
+---
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+## 7. Testes Automatizados
 
-## Support
+- Cobertura abrangente com testes unitários para Use Cases.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+---
 
-## Stay in touch
+## 8. Segurança
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- Além do rate limiting, o uso do Helmet configura cabeçalhos HTTP para prevenir ataques comuns (XSS, CSRF, etc).
+- CORS habilitado para permitir requisições seguras controladas.
+- Dados sempre validados antes de processamento.
 
-## License
+---
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## 9. Logs Estruturados
+
+- Logs configurados com Pino para facilitar análise e monitoramento.
+- Todos os logs seguem formato JSON estruturado.
+- Logs de erro, aviso, info e debug disponíveis conforme nível configurado.
+
+---
+
+## 10. Containerização
+
+- Dockerfile otimizado para build leve e rápido.
+- docker-compose.yml para execução simples em ambiente local ou CI/CD.
+
+---
+
+## 11. Endpoints Principais
+
+| Método | Endpoint        | Descrição                            |
+| ------ | --------------- | ------------------------------------ |
+| POST   | `/transactions` | Cria nova transação                  |
+| DELETE | `/transactions` | Remove todas as transações           |
+| GET    | `/transactions` | Retorna todas as transações          |
+| GET    | `/statistics`   | Retorna estatísticas dos últimos 60s |
+| GET    | `/health`       | Retorna status da aplicação          |
+
+---
+
+## 12. Conclusão
+
+Esta solução prioriza clareza, modularidade, segurança e qualidade do código.  
+Foi implementada para atender rigorosamente os requisitos do desafio, utilizando padrões modernos e boas práticas.
+
+---
+
+## Autor
+
+[Atrhur Rocha](https://github.com/arthurrocha-dev)

@@ -7,10 +7,22 @@ import { DeleteAllTransactionsUseCase } from './core/use-cases/transaction/delet
 import { GetAllTransactionsUseCase } from './core/use-cases/transaction/get-all-transactions.usecase';
 import { GetStatisticsUseCase } from './core/use-cases/statistics/get-statistics.usecase';
 import { StatisticsController } from './infra/http/controllers/statistics.controller';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
+import { HealthController } from './infra/http/controllers/healthcheck.controller';
 
 @Module({
-  imports: [],
-  controllers: [TransactionsController, StatisticsController],
+  imports: [
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          ttl: 60,
+          limit: 5,
+        },
+      ],
+    }),
+  ],
+  controllers: [HealthController, TransactionsController, StatisticsController],
   providers: [
     CreateTransactionUseCase,
     DeleteAllTransactionsUseCase,
@@ -19,6 +31,10 @@ import { StatisticsController } from './infra/http/controllers/statistics.contro
     {
       provide: TransactionsRepository,
       useClass: InMemoryTransactionsRepository,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
     },
   ],
 })
