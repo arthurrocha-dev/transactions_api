@@ -2,19 +2,27 @@ import { CreateTransactionUseCase } from './create-transaction.usecase';
 import { TransactionsRepository } from '../../interfaces/transactions-repository.interface';
 import { UnprocessableEntityException } from '@nestjs/common';
 import { Transaction } from '../../entities/transaction.entity';
+import { MetricsService } from '../../../services/metrics.service';
 
 describe('CreateTransactionUseCase', () => {
   let useCase: CreateTransactionUseCase;
   let repository: jest.Mocked<TransactionsRepository>;
+  let metricsService: jest.Mocked<MetricsService>;
 
   beforeEach(() => {
     repository = {
       save: jest.fn(),
       deleteAll: jest.fn(),
-      getAll: jest.fn(),
+      getAll: jest.fn().mockReturnValue([]),
     };
 
-    useCase = new CreateTransactionUseCase(repository);
+    metricsService = {
+      incrementTransactionCount: jest.fn(),
+      incrementTransactionsCreated: jest.fn(),
+      setTransactionsInMemory: jest.fn(),
+    } as unknown as jest.Mocked<MetricsService>;
+
+    useCase = new CreateTransactionUseCase(repository, metricsService);
   });
 
   it('deve criar uma transação válida', () => {

@@ -1,10 +1,14 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { Transaction } from '../../entities/transaction.entity';
 import { TransactionsRepository } from '../../interfaces/transactions-repository.interface';
+import { MetricsService } from '../../../services/metrics.service';
 
 @Injectable()
 export class CreateTransactionUseCase {
-  constructor(private readonly repository: TransactionsRepository) {}
+  constructor(
+    private readonly repository: TransactionsRepository,
+    private readonly metricsService: MetricsService,
+  ) {}
 
   execute(amount: number, timestamp: Date): void {
     const now = new Date();
@@ -18,5 +22,9 @@ export class CreateTransactionUseCase {
 
     const transaction = new Transaction(amount, timestamp);
     this.repository.save(transaction);
+    this.metricsService.incrementTransactionsCreated();
+
+    const allTransactions = this.repository.getAll();
+    this.metricsService.setTransactionsInMemory(allTransactions.length);
   }
 }

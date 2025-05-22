@@ -1,8 +1,8 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { GetStatisticsUseCase } from '../../../core/use-cases/statistics/get-statistics.usecase';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { Throttle } from '@nestjs/throttler';
-import { PinoLogger } from 'src/services/pino-logger.service';
+import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
+import { PinoLogger } from '../../../services/pino-logger.service';
 
 @ApiTags('Statistics')
 @Controller('statistics')
@@ -12,7 +12,8 @@ export class StatisticsController {
     private readonly logger: PinoLogger,
   ) {}
 
-  @Throttle({ default: { limit: 1, ttl: 60000 } })
+  @UseGuards(ThrottlerGuard)
+  @Throttle({ default: { limit: 6, ttl: 60000 } })
   @Get()
   @ApiOperation({ summary: 'Retorna estatísticas das últimas 60s' })
   @ApiResponse({
