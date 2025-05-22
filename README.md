@@ -269,6 +269,43 @@ Foi implementada para atender rigorosamente os requisitos do desafio, utilizando
 
 ---
 
+## 18. Monitoramento e Observabilidade
+
+O sistema foi equipado com ferramentas modernas de monit
+
+### Prometheus
+
+- Exposição de métricas HTTP em /metrics utilizando @willsoto/nestjs-prometheus.
+- Métricas customizadas criadas com prom-client, incluindo:
+  - Contador de requisições HTTP por método, rota e código de status.
+  - Contador de erros de rate limiting (ThrottlerException).
+  - Métricas de uso de CPU e memória do servidor via os module.
+
+Exemplo de Métrica Personalizada:
+
+```
+http_requests_total{method="POST", route="/transactions", status_code="201"} 3
+```
+
+### Grafana
+
+- Dashboard configurado para visualizar em tempo real:
+  - Volume de requisições HTTP por endpoint.
+  - Taxa de erros.
+  - Recursos do sistema (CPU, memória).
+  - Healthcheck da aplicação.
+- Integração feita com Prometheus como fonte de dados.
+- Painéis com títulos descritivos e visual clean para rápida análise.
+
+#### Alertas
+
+Alertas podem ser configurados no Grafana com base em:
+
+- Volume excessivo de erros 5xx.
+- Alta taxa de ThrottlerExceptions.
+- CPU > 80% por mais de 1 min.
+- /health retornando erro por mais de 30s.
+
 ## Autor
 
 **Arthur Rocha**

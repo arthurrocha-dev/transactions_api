@@ -6,6 +6,7 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -14,7 +15,7 @@ import { CreateTransactionUseCase } from '../../../core/use-cases/transaction/cr
 import { ApiTags } from '@nestjs/swagger';
 import { DeleteAllTransactionsUseCase } from '../../../core/use-cases/transaction/delete-all-transactions.usecase';
 import { GetAllTransactionsUseCase } from '../../../core/use-cases/transaction/get-all-transactions.usecase';
-import { Throttle } from '@nestjs/throttler';
+import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
 import { PinoLogger } from 'src/services/pino-logger.service';
 
 @ApiTags('Transactions')
@@ -27,6 +28,7 @@ export class TransactionsController {
     private readonly logger: PinoLogger,
   ) {}
 
+  @UseGuards(ThrottlerGuard)
   @Throttle({ default: { limit: 10, ttl: 60000 } })
   @Get()
   getAll() {
@@ -35,6 +37,7 @@ export class TransactionsController {
     return this.getAllTransactionsUseCase.execute();
   }
 
+  @UseGuards(ThrottlerGuard)
   @Throttle({ default: { limit: 10, ttl: 60000 } })
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -58,6 +61,7 @@ export class TransactionsController {
     };
   }
 
+  @UseGuards(ThrottlerGuard)
   @Throttle({ default: { limit: 1, ttl: 60000 } })
   @Delete()
   @HttpCode(HttpStatus.OK)
