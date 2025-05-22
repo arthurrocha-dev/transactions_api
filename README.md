@@ -22,6 +22,7 @@
 - [15. Integração Contínua (CI)](#15-integração-contínua-ci)
 - [16. Deploy Contínuo (CD)](#16-deploy-contínuo-cd)
 - [17. Conclusão](#17-conclusão)
+- [18. Monitoramento e Observabilidade](#18-monitoramento-e-observabilidade)
 - [Autor](#autor)
 
 ## 1. Visão Geral
