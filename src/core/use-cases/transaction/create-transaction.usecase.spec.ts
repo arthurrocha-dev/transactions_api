@@ -13,7 +13,7 @@ describe('CreateTransactionUseCase', () => {
     repository = {
       save: jest.fn(),
       deleteAll: jest.fn(),
-      getAll: jest.fn(),
+      getAll: jest.fn().mockReturnValue([]),
     };
 
     metricsService = {

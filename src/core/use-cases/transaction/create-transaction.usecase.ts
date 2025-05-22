@@ -1,7 +1,7 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { Transaction } from '../../entities/transaction.entity';
 import { TransactionsRepository } from '../../interfaces/transactions-repository.interface';
-import { MetricsService } from 'src/services/metrics.service';
+import { MetricsService } from '../../../services/metrics.service';
 
 @Injectable()
 export class CreateTransactionUseCase {

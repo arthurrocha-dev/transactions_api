@@ -16,7 +16,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { DeleteAllTransactionsUseCase } from '../../../core/use-cases/transaction/delete-all-transactions.usecase';
 import { GetAllTransactionsUseCase } from '../../../core/use-cases/transaction/get-all-transactions.usecase';
 import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
-import { PinoLogger } from 'src/services/pino-logger.service';
+import { PinoLogger } from '../../../services/pino-logger.service';
 
 @ApiTags('Transactions')
 @Controller('transactions')

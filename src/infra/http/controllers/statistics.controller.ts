@@ -2,7 +2,7 @@ import { Controller, Get, UseGuards } from '@nestjs/common';
 import { GetStatisticsUseCase } from '../../../core/use-cases/statistics/get-statistics.usecase';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
-import { PinoLogger } from 'src/services/pino-logger.service';
+import { PinoLogger } from '../../../services/pino-logger.service';
 
 @ApiTags('Statistics')
 @Controller('statistics')

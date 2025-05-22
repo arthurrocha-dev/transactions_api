@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { PinoLogger } from 'src/services/pino-logger.service';
+import { PinoLogger } from '../../../services/pino-logger.service';
 
 @Controller('health')
 export class HealthController {
