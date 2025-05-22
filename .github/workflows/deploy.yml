@@ -22,10 +22,13 @@ jobs:
 
       - name: Deploy via SSH
         run: |
-          ssh ${{ secrets.USERNAME }}@${{ secrets.SERVER_IP }} << 'EOF'
-            cd /root/transactions_api/
-            docker compose down transaction-api || true
+          ssh -o StrictHostKeyChecking=no \
+              -o ServerAliveInterval=60 \
+              -tt ${{ secrets.USERNAME }}@${{ secrets.SERVER_IP }} << 'EOF'
+            set -e
+            cd /root/transactions_api
             git pull origin main
+            docker compose down transaction-api || true
             docker compose build --no-cache
             docker compose up -d
           EOF
