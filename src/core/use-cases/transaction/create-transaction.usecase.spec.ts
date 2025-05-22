@@ -2,7 +2,7 @@ import { CreateTransactionUseCase } from './create-transaction.usecase';
 import { TransactionsRepository } from '../../interfaces/transactions-repository.interface';
 import { UnprocessableEntityException } from '@nestjs/common';
 import { Transaction } from '../../entities/transaction.entity';
-import { MetricsService } from 'src/services/metrics.service';
+import { MetricsService } from '../../../services/metrics.service';
 
 describe('CreateTransactionUseCase', () => {
   let useCase: CreateTransactionUseCase;
