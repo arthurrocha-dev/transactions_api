@@ -7,8 +7,6 @@ services:
       - '${PORT}:3000'
     env_file:
       - .env
-    environment:
-      - NODE_ENV=development
     healthcheck:
       test: ['CMD', 'curl', '-f', '${BASE_URL}/health']
       interval: 30s
