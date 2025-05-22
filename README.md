@@ -64,7 +64,7 @@ Copie o arquivo .env.example e cole na raiz do projeto renomendo-o para .env, aj
 
 #### 4. A API estará disponível em:
 
-`http://localhost:3000`
+`http://localhost:3000/api`
 
 ou e alguma outra porta que tenha sido configurada no .env
 
@@ -88,7 +88,7 @@ ou
 
 #### 2. A API estará disponível em:
 
-`http://localhost:3000`
+`http://localhost:3000/api`
 
 ou e alguma outra porta que tenha sido configurada no .env
 
@@ -96,7 +96,7 @@ ou e alguma outra porta que tenha sido configurada no .env
 
 Apos a inicialização do projeto, a documentação pode ser acessada em:
 
-(http://localhost:3000/docs)
+(http://localhost:3000/api/docs)
 
 ---
 
@@ -186,7 +186,7 @@ Essa separação garante fácil manutenção, testabilidade e flexibilidade para
 
 ## 13. Healthcheck e Monitoramento da Aplicação
 
-#### Endpoint `/health`
+#### Endpoint `/api/health`
 
 - Endpoint simples que retorna HTTP 200 e um JSON com { status: 'ok', timestamp: '...' } quando a aplicação está saudável.
 - Pode ser estendido para verificar dependências críticas (ex: banco de dados, caches).
@@ -200,13 +200,13 @@ Essa separação garante fácil manutenção, testabilidade e flexibilidade para
 
 ## 14. Endpoints Principais
 
-| Método | Endpoint        | Descrição                            |
-| ------ | --------------- | ------------------------------------ |
-| POST   | `/transactions` | Cria nova transação                  |
-| DELETE | `/transactions` | Remove todas as transações           |
-| GET    | `/transactions` | Retorna todas as transações          |
-| GET    | `/statistics`   | Retorna estatísticas dos últimos 60s |
-| GET    | `/health`       | Retorna status da aplicação          |
+| Método | Endpoint            | Descrição                            |
+| ------ | ------------------- | ------------------------------------ |
+| POST   | `/api/transactions` | Cria nova transação                  |
+| DELETE | `/api/transactions` | Remove todas as transações           |
+| GET    | `/api/transactions` | Retorna todas as transações          |
+| GET    | `/api/statistics`   | Retorna estatísticas dos últimos 60s |
+| GET    | `/api/health`       | Retorna status da aplicação          |
 
 ---
 
@@ -258,7 +258,7 @@ O arquivo que define o pipeline de CD está localizado em:
 
 A aplicação encontra-se disponível no link a baixo.
 
-https://transaction-api.arthurrocha.dev/docs
+https://transaction-api.arthurrocha.dev/api/docs
 
 ---
 
