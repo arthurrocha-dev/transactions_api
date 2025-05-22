@@ -26,5 +26,5 @@ jobs:
             cd /root/transactions_api/
             docker compose down transaction-api || true
             git pull origin main
-            docker compose up -d
+            docker compose up -d --build
           EOF
