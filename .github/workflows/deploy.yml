@@ -15,20 +15,16 @@ jobs:
 
       - name: Setup SSH
         run: |
-          mkdir -p $HOME/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > $HOME/.ssh/id_ed25519
-          chmod 600 $HOME/.ssh/id_ed25519
-          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> $HOME/.ssh/known_hosts
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
       - name: Deploy via SSH
         run: |
-          ssh -o StrictHostKeyChecking=no \
-              -o ServerAliveInterval=60 \
-              -tt ${{ secrets.USERNAME }}@${{ secrets.SERVER_IP }} << 'EOF'
-            set -e
-            cd /root/transactions_api
-            git pull origin main
+          ssh ${{ secrets.USERNAME }}@${{ secrets.SERVER_IP }} << 'EOF'
+            cd /root/transactions_api/
             docker compose down transaction-api || true
-            docker compose build --no-cache
+            git pull origin main
             docker compose up -d
           EOF
