@@ -11,6 +11,8 @@ async function bootstrap() {
 
   const logger = new PinoLogger();
 
+  app.setGlobalPrefix('api');
+
   app.useLogger(logger);
   app.use(helmet());
   app.enableCors();
@@ -26,7 +28,7 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('docs', app, document);
+  SwaggerModule.setup('api/docs', app, document);
 
   await app.listen(process.env.PORT ?? 3000);
 }
